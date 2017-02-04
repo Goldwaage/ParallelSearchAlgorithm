@@ -1,7 +1,9 @@
-package Mergesort;
+package Mergesort.byUniversityWashington;
 
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Random;
+import java.util.logging.Logger;
 
 /*
 CSE 373, Winter 2013
@@ -32,12 +34,19 @@ parallel (4 threads):
    8192000 elements  =>     674 ms
   16384000 elements  =>    1240 ms
   32768000 elements  =>    2668 ms
+
+  Quelle: University of Washington Computer Science & Engineering
+          https://courses.cs.washington.edu/courses/cse373/13wi/lectures/03-13/MergeSort.java
 */
 
 /**
- * Created by marc on 23.01.17.
+ * This class implements a sequential version of the Mergesort algorithm. The implementation sourced by the
+ * University of Wasingtion (see the comment above)
+ *
  */
-public class MergesortThreaded {
+public class MergesortUniversityWashington {
+
+    //private static final Logger LOGGER = Logger.getLogger(MergesortUniversityWashington.class.getName());
 
     private static final Random RAND = new Random(42);   // random number generator
 
@@ -64,12 +73,15 @@ public class MergesortThreaded {
 
     public static void parallelMergeSort(int[] a) {
 
+        //LOGGER.info("Serial sorting by University of Washington.");
+
         int cores = Runtime.getRuntime().availableProcessors();
-        //System.out.println("cores: " + cores);//;int cores = 8;
+
         parallelMergeSort(a, cores);
     }
 
     public static void parallelMergeSort(int[] a, int threadCount) {
+
         if (threadCount <= 1) {
             mergeSort(a);
         } else if (a.length >= 2) {
@@ -80,15 +92,6 @@ public class MergesortThreaded {
             // sort the halves
              mergeSort(left);
              mergeSort(right);
-//            Thread lThread = new Thread(new Sorter(left,  threadCount / 2));
-//            Thread rThread = new Thread(new Sorter(right, threadCount / 2));
-//            lThread.start();
-//            rThread.start();
-//
-//            try {
-//                lThread.join();
-//                rThread.join();
-//            } catch (InterruptedException ie) {}
 
             // merge them back together
             merge(left, right, a);
@@ -130,12 +133,6 @@ public class MergesortThreaded {
         }
     }
 
-
-
-
-
-
-
     // Swaps the values at the two given indexes in the given array.
     public static final void swap(int[] a, int i, int j) {
         if (i != j) {
@@ -163,8 +160,6 @@ public class MergesortThreaded {
         }
         return true;
     }
-
-
 
     // Creates an array of the given length, fills it with random
     // non-negative integers, and returns it.

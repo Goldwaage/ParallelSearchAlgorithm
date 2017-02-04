@@ -1,4 +1,4 @@
-package Mergesort;
+package Mergesort.byVogella;
 
 
 import static org.junit.Assert.assertTrue;
@@ -15,7 +15,7 @@ import org.junit.Test;
  *
  * @author Lars Vogel
  */
-public class MergesortTest {
+public class MergesortVogellaTest {
 
 
     private int[] numbers;
@@ -35,13 +35,13 @@ public class MergesortTest {
     public void testMergeSort() {
         long startTime = System.currentTimeMillis();
 
-        //Mergesort sorter = new Mergesort();
-        MergesortThreaded2 sorter = new MergesortThreaded2();
+        MergesortVogella sorter = new MergesortVogella();
+        //MergesortVogellaThreaded sorter = new MergesortVogellaThreaded();
         sorter.sort(numbers);
 
         long stopTime = System.currentTimeMillis();
         long elapsedTime = stopTime - startTime;
-        System.out.println("Mergesort " + elapsedTime);
+        System.out.println("Mergesort " + elapsedTime + "ms");
 
         for (int i = 0; i < numbers.length - 1; i++) {
             if (numbers[i] > numbers[i + 1]) {
@@ -60,8 +60,8 @@ public class MergesortTest {
             for (int a = 0; a < numbers.length; a++) {
                 numbers[a] = generator.nextInt(MAX);
             }
-//            Mergesort sorter = new Mergesort();
-            MergesortThreaded2 sorter = new MergesortThreaded2();
+            MergesortVogella sorter = new MergesortVogella();
+//            MergesortVogellaThreaded sorter = new MergesortVogellaThreaded();
             sorter.sort(numbers);
             for (int j = 0; j < numbers.length - 1; j++) {
                 if (numbers[j] > numbers[j + 1]) {
