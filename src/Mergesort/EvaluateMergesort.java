@@ -5,6 +5,7 @@ import Mergesort.byUniversityWashington.MergesortUniversityWashington;
 import Mergesort.byUniversityWashington.JavaThreads.MergesortUniversityWashingtonThreaded;
 import Mergesort.byVogella.MergesortVogella;
 import Mergesort.byVogella.JavaThreads.MergesortVogellaThreaded;
+import Mergesort.byVogella.OpenMP.MergesortVogellaOMP;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +30,7 @@ public class EvaluateMergesort {
     /* Constants */
 
     /** The number of elements in the array of investigation. */
-    private final static int ARRAY_SIZE = 10000;
+    private final static int ARRAY_SIZE = 10000; //1024000
 
     /* --- Classvariables --- */
 
@@ -44,8 +45,8 @@ public class EvaluateMergesort {
 
     /** Instance of parallel mergesort algorithm based on the Version by Vogella implemented with openMP. */
     // @ToDo declare the classvariable:
-    // private static MergesortVogellaOMP msVogellaOMP
-    // = new MergesortVogellaOMP();
+     private static MergesortVogellaOMP msVogellaOMP
+     = new MergesortVogellaOMP();
 
 //    /** Instance of sequential mergesort algorithm by the University of Washington. */
 //    private static MergesortUniversityWashington msUniversitiyWashington= new MergesortUniversityWashington();
@@ -72,19 +73,24 @@ public class EvaluateMergesort {
      */
     public static void main(String[] args) {
 
-        System.out.println("In this testrun the squenz has " + ARRAY_SIZE + " Elements.\n");
-        // evaluate Mergesort Vogella
-        evaluateMergesortVogella();
+        System.gc();
 
-        // evaluate Mergesort Vogella with Java Threads
-        evaluateMergesortVogellaThreaded();
+        System.out.println("In this testrun the sequence has " + ARRAY_SIZE + " Elements.\n");
+        // evaluate Mergesort Vogella
+//        evaluateMergesortVogella();
+//
+////        System.gc();
+//        // evaluate Mergesort Vogella with Java Threads
+//        evaluateMergesortVogellaThreaded();
 
         // evaluate Mergesort Vogella with openMP
 //        evaluateMergesortVogellaOpenMP();
 
+        System.gc();
         // evaluate Mergesort University Washington
         evaluateMergesortUniversityWashington();
 
+        System.gc();
         // evaluate Mergesort University Washington with Java Threads
         evaluateMergesortUniversityWashingtonThreaded();
 
@@ -193,7 +199,7 @@ public class EvaluateMergesort {
         startTime = System.currentTimeMillis();
 
         // sort @TODO
-        //msVogellaOMP.sort(numbers);
+        msVogellaOMP.sort(numbers);
 
         // get systemtime after sorting
         endTime = System.currentTimeMillis();

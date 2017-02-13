@@ -50,7 +50,7 @@ public class MergesortUniversityWashingtonThreaded {
     private static final Random RAND = new Random(42);   // random number generator
 
     public static void main(String[] args) throws Throwable {
-        int LENGTH = 1000;   // initial length of array to sort
+        int LENGTH = 1024000;   // initial length of array to sort
         int RUNS   =  10;   // how many times to grow by 2?
 
         for (int i = 1; i <= RUNS; i++) {

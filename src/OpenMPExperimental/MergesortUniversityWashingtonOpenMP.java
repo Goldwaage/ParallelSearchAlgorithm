@@ -1,9 +1,10 @@
-package Mergesort.byUniversityWashington;
+package OpenMPExperimental;
 
+
+import Mergesort.byUniversityWashington.JavaThreads.SortingThreadMergesortUniversityWashington;
 
 import java.util.Arrays;
 import java.util.Random;
-import java.util.logging.Logger;
 
 /*
 CSE 373, Winter 2013
@@ -40,13 +41,13 @@ parallel (4 threads):
 */
 
 /**
- * This class implements a sequential version of the Mergesort algorithm. The implementation sourced by the
- * University of Wasingtion (see the comment above)
+ * This class implements a parallel version of the Mergesort algorithm. The implementation sourced by the
+ * University of Wasingtion (see the comment above). The parallelism based on Java Threads.
  *
  */
-public class MergesortUniversityWashington {
+public class MergesortUniversityWashingtonOpenMP {
 
-    //private static final Logger LOGGER = Logger.getLogger(MergesortUniversityWashington.class.getName());
+    //private static final Logger LOGGER = Logger.getLogger(MergesortUniversityWashingtonThreaded.class.getName());
 
     private static final Random RAND = new Random(42);   // random number generator
 
@@ -73,15 +74,14 @@ public class MergesortUniversityWashington {
 
     public static void parallelMergeSort(int[] a) {
 
-        //LOGGER.info("Serial sorting by University of Washington.");
+//        LOGGER.info("Parallel sorting by University of Washington.");
 
         int cores = Runtime.getRuntime().availableProcessors();
-
+        //System.out.println("cores: " + cores);//;int cores = 8;
         parallelMergeSort(a, cores);
     }
 
     public static void parallelMergeSort(int[] a, int threadCount) {
-
         if (threadCount <= 1) {
             mergeSort(a);
         } else if (a.length >= 2) {
@@ -89,32 +89,16 @@ public class MergesortUniversityWashington {
             int[] left  = Arrays.copyOfRange(a, 0, a.length / 2);
             int[] right = Arrays.copyOfRange(a, a.length / 2, a.length);
 
-             /* === OMP CONTEXT === */
-            class OMPContext {
-                public int local_number;
-            }
-            final OMPContext ompContext = new OMPContext();
-//            ompContext.local_number = number;
-            final org.omp4j.runtime.IOMPExecutor ompExecutor = new org.omp4j.runtime.DynamicExecutor(Runtime.getRuntime().availableProcessors());
-        /* === /OMP CONTEXT === */
-            for (int ompI = 0; ompI < Runtime.getRuntime().availableProcessors(); ompI++)
-            {
-                ompExecutor.execute(new Runnable()
-                                    {
-                                        @Override
-                                        public void run()
-                                        {
-
             // sort the halves
-             mergeSort(left);
-             mergeSort(right);
+            Thread lThread = new Thread(new SortingThreadMergesortUniversityWashington(left,  threadCount / 2));
+            Thread rThread = new Thread(new SortingThreadMergesortUniversityWashington(right, threadCount / 2));
+            lThread.start();
+            rThread.start();
 
-                                        }
-                                    });
-            }
-            ompExecutor.waitForExecution();
-//            number = ompContext.local_number;
-
+            try {
+                lThread.join();
+                rThread.join();
+            } catch (InterruptedException ie) {}
 
             // merge them back together
             merge(left, right, a);

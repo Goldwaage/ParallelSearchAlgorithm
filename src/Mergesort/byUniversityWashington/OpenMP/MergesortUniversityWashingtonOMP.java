@@ -1,9 +1,8 @@
-package Mergesort.byUniversityWashington;
+package Mergesort.byUniversityWashington.OpenMP;
 
 
 import java.util.Arrays;
 import java.util.Random;
-import java.util.logging.Logger;
 
 /*
 CSE 373, Winter 2013
@@ -44,7 +43,7 @@ parallel (4 threads):
  * University of Wasingtion (see the comment above)
  *
  */
-public class MergesortUniversityWashington {
+public class MergesortUniversityWashingtonOMP {
 
     //private static final Logger LOGGER = Logger.getLogger(MergesortUniversityWashington.class.getName());
 
@@ -89,32 +88,9 @@ public class MergesortUniversityWashington {
             int[] left  = Arrays.copyOfRange(a, 0, a.length / 2);
             int[] right = Arrays.copyOfRange(a, a.length / 2, a.length);
 
-             /* === OMP CONTEXT === */
-            class OMPContext {
-                public int local_number;
-            }
-            final OMPContext ompContext = new OMPContext();
-//            ompContext.local_number = number;
-            final org.omp4j.runtime.IOMPExecutor ompExecutor = new org.omp4j.runtime.DynamicExecutor(Runtime.getRuntime().availableProcessors());
-        /* === /OMP CONTEXT === */
-            for (int ompI = 0; ompI < Runtime.getRuntime().availableProcessors(); ompI++)
-            {
-                ompExecutor.execute(new Runnable()
-                                    {
-                                        @Override
-                                        public void run()
-                                        {
-
             // sort the halves
              mergeSort(left);
              mergeSort(right);
-
-                                        }
-                                    });
-            }
-            ompExecutor.waitForExecution();
-//            number = ompContext.local_number;
-
 
             // merge them back together
             merge(left, right, a);
