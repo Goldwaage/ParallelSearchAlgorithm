@@ -36,7 +36,6 @@ public class MergesortVogellaTest {
         long startTime = System.currentTimeMillis();
 
         MergesortVogella sorter = new MergesortVogella();
-        //MergesortVogellaThreaded sorter = new MergesortVogellaThreaded();
         sorter.sort(numbers);
 
         long stopTime = System.currentTimeMillis();
@@ -61,7 +60,6 @@ public class MergesortVogellaTest {
                 numbers[a] = generator.nextInt(MAX);
             }
             MergesortVogella sorter = new MergesortVogella();
-//            MergesortVogellaThreaded sorter = new MergesortVogellaThreaded();
             sorter.sort(numbers);
             for (int j = 0; j < numbers.length - 1; j++) {
                 if (numbers[j] > numbers[j + 1]) {

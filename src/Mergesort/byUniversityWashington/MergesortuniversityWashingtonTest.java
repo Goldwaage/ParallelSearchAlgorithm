@@ -36,7 +36,10 @@ public class MergesortuniversityWashingtonTest {
     public void testMergeSort() {
         long startTime = System.currentTimeMillis();
 
+        // edit by Marc Kasper: call the version of the University of Washington instead vogella implementation
         MergesortUniversityWashington sorter = new MergesortUniversityWashington();
+        // end of editing by Marc Kasper
+
         sorter.parallelMergeSort(numbers);
 
         long stopTime = System.currentTimeMillis();
@@ -61,7 +64,6 @@ public class MergesortuniversityWashingtonTest {
                 numbers[a] = generator.nextInt(MAX);
             }
             MergesortVogella sorter = new MergesortVogella();
-//            MergesortVogellaThreaded sorter = new MergesortVogellaThreaded();
             sorter.sort(numbers);
             for (int j = 0; j < numbers.length - 1; j++) {
                 if (numbers[j] > numbers[j + 1]) {

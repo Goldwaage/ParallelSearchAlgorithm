@@ -36,7 +36,9 @@ public class MergesortUniversityWashingtonThreadedTest {
     public void testMergeSort() {
         long startTime = System.currentTimeMillis();
 
+        // edit by Marc Kasper: call the parallel version of the University of Washington instead sequential
         MergesortUniversityWashingtonThreaded sorter = new MergesortUniversityWashingtonThreaded();
+        // end of editing by Marc Kasper
 
         sorter.parallelMergeSort(numbers);
 
@@ -62,7 +64,10 @@ public class MergesortUniversityWashingtonThreadedTest {
                 numbers[a] = generator.nextInt(MAX);
             }
 
+            // edit by Marc Kasper: call the parallel version instead sequential
             MergesortVogellaThreaded sorter = new MergesortVogellaThreaded();
+            // end of editing by Marc Kasper
+
             sorter.sort(numbers);
             for (int j = 0; j < numbers.length - 1; j++) {
                 if (numbers[j] > numbers[j + 1]) {

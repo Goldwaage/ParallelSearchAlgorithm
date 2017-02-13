@@ -1,9 +1,8 @@
-package Mergesort.byUniversityWashington;
+package Mergesort.byUniversityWashington.OpenMP;
 
 
 import java.util.Arrays;
 import java.util.Random;
-import java.util.logging.Logger;
 
 /*
 CSE 373, Winter 2013
@@ -44,12 +43,14 @@ parallel (4 threads):
  * University of Wasingtion (see the comment above)
  *
  */
-public class MergesortUniversityWashington {
+public class MergesortUniversityWashingtonOMP {
+
+    //private static final Logger LOGGER = Logger.getLogger(MergesortUniversityWashington.class.getName());
 
     private static final Random RAND = new Random(42);   // random number generator
 
     public static void main(String[] args) throws Throwable {
-        int LENGTH = 1000;   // initial length of array to sort
+        int LENGTH = 1024000;   // initial length of array to sort
         int RUNS   =  10;   // how many times to grow by 2?
 
         for (int i = 1; i <= RUNS; i++) {
@@ -70,6 +71,8 @@ public class MergesortUniversityWashington {
     }
 
     public static void parallelMergeSort(int[] a) {
+
+        //LOGGER.info("Serial sorting by University of Washington.");
 
         int cores = Runtime.getRuntime().availableProcessors();
 

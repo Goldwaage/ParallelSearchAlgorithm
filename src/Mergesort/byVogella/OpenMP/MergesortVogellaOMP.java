@@ -1,8 +1,8 @@
-package Mergesort.byVogella.JavaThreads;
+package Mergesort.byVogella.OpenMP;
 
-import java.util.Arrays;
-import java.util.Random;
 import java.util.logging.Logger;
+
+
 
 /**
  * This class is an implementation of the mergesort algortihm from Lars Vogel by vogella.com
@@ -10,14 +10,11 @@ import java.util.logging.Logger;
  *
  *
  * @author Lars Vogel
- * @author Marc Kasper (edit/add the parallelism part and German comments)
+ * @author Konstantin Reintjes (edit/add the parallelism part with omp4j)
  */
-public class MergesortVogellaThreaded {
+public class MergesortVogellaOMP {
 
-    // add by Marc Kasper
-    /** The Logger Constante  for this instance. */
-    private static final Logger LOGGER = Logger.getLogger(MergesortVogellaThreaded.class.getName());
-    // end of editing by Marc Kasper
+    private static final Logger LOGGER = Logger.getLogger(MergesortVogellaOMP.class.getName());
 
     private int[] numbers;
     private int[] helper;
@@ -26,18 +23,39 @@ public class MergesortVogellaThreaded {
 
     public void sort(int[] values) {
 
-        // add by Marc Kasper
         //LOGGER.info("Parallel sorting by Vogella");
-        // end of editing by Marc Kasper
 
         this.numbers = values;
         number = values.length;
         this.helper = new int[number];
-        mergesort(0, number - 1);
+
+        /* === OMP CONTEXT === */
+        class OMPContext {
+            public int local_number;
+        }
+        final OMPContext ompContext = new OMPContext();
+        ompContext.local_number = number;
+        final org.omp4j.runtime.IOMPExecutor ompExecutor = new org.omp4j.runtime.DynamicExecutor(Runtime.getRuntime().availableProcessors());
+        /* === /OMP CONTEXT === */
+        for (int ompI = 0; ompI < Runtime.getRuntime().availableProcessors(); ompI++)
+        {
+            ompExecutor.execute(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    mergesort(0, number - 1);
+
+                }
+            });
+        }
+        ompExecutor.waitForExecution();
+        number = ompContext.local_number;
+
     }
 
     /**
-     * Diese Methode wendet den MergesortVogella Algorithmus rekursiv auf das übergebene Intervall der zu
+     * Diese Methode wendet den MergesortVogella Algorithmus rekursiv auf das ÃŒbergebene Intervall der zu
      * sortierenden Menge an.
      *
      * @param low der untere / linke Teil der zu sortierenden Ausgangsmenge
@@ -51,27 +69,18 @@ public class MergesortVogellaThreaded {
             // Get the index of the element which is in the middle
             int middle = low + (high - low) / 2;
 
-            // add by Marc Kasper
+
+
             // Sort the left side of the array
-            SortingThreadMergesortVogella st1 = new SortingThreadMergesortVogella(this, low, middle);
+            mergesort(low, middle);
 
             // Sort the right side of the array
-            SortingThreadMergesortVogella st2 = new SortingThreadMergesortVogella(this, middle + 1, high);
+            mergesort(middle + 1, high);
 
-            st1.start();
-            st2.start();
-
-            try {
-                st1.join();
-                st2.join();
-            } catch (InterruptedException ie) {
-
-                ie.getStackTrace();
-            }
-            // end of editing by Marc Kasper
 
             // Combine them both
             merge(low, middle, high);
+
         }
     }
 

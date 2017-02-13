@@ -14,6 +14,7 @@ import static org.junit.Assert.fail;
  * This is a JUnit Testclass for the mergesort.
  *
  * @author Lars Vogel
+ * @author Marc Kasper (edit the testcall)
  */
 public class MergesortVogellaThreadedTest {
 
@@ -35,7 +36,10 @@ public class MergesortVogellaThreadedTest {
     public void testMergeSort() {
         long startTime = System.currentTimeMillis();
 
+        // edit by Marc Kasper: call the thread version of vogella implementation instead of the sequnetial
         MergesortVogellaThreaded sorter = new MergesortVogellaThreaded();
+        // end of editing by Marc Kasper
+
         sorter.sort(numbers);
 
         long stopTime = System.currentTimeMillis();
@@ -60,7 +64,10 @@ public class MergesortVogellaThreadedTest {
                 numbers[a] = generator.nextInt(MAX);
             }
 
+            // edit by Marc Kasper: call the thread version of vogella implementation instead of the sequnetial
             MergesortVogellaThreaded sorter = new MergesortVogellaThreaded();
+            // end of editing by Marc Kasper
+
             sorter.sort(numbers);
             for (int j = 0; j < numbers.length - 1; j++) {
                 if (numbers[j] > numbers[j + 1]) {
